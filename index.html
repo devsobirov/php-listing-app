@@ -7,23 +7,30 @@
     <title>Test Assignment</title>
 
     <link rel="stylesheet" href="./style.css">
+    <script src="./prettier.js"></script>
 </head>
 <body>
     <section class="files">
-        <h1>List of files</h1>
-        <ul id="files-list">
-        </ul>
+        <div class="container">  
+            <h1>List of files</h1>
+            <ul id="files-list"></ul>
+        </div>
     </section>
     <section class="form">
-        <div class="action">
-            <input type="text">
-            <input type="text">
-            <button>Send</button>
+        <div class="container">
+            <div class="action">
+                <input type="text">
+                <input type="text">
+                <button>Send</button>
+            </div>
         </div>
     </section>
     <section class="listing">
-        <div class="scrollable">
-            <textarea id="content" readonly rows="800"></textarea>
+        <div class="container">
+            <h1>Choose fili for listing</h1>
+            <div class="scrollable">
+                <textarea id="content" readonly rows="800"></textarea>
+            </div>
         </div>
     </section>
 

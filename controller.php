@@ -1,7 +1,8 @@
     <?php 
 
-    const ROOT = __DIR__;
-    const ID = 'us3477';
+    define('ROOT', __DIR__);
+    define('ID', 'us3477');
+
     $db = null;
     $id = null;
     $value = null;
@@ -34,31 +35,26 @@
         }
 
         echo json_encode(htmlspecialchars($content));
-        //echo json_encode(nl2br(htmlspecialchars($content)));
     }
 
-    if ($action === 'init_db') {
-        $error = null;
+    if ($action === 'prepare_for_create_rows') {
         $db = new Database;
-        $db->setConnection();
+        $error = $db->connection->errno;
         
-        var_dump($db);
-        die($db->error);
         if (!$error) {
-            $error = $db->createTable(ID);
+            $error = $db->getLastRow();
+        } 
+        
+        if(!$error) {
+            $id = $db->lastId;
+            $value = $db->lastValue;
             $action = 'create_rows';
         } else {
-            echo json_encode($error);
+            echo json_encode($db->connection->error);
         }
     }
     
     if ($action === 'create_rows') {
-
-        $error = $db->getLastRow();
-        if (!$error) { 
-            $id = $db->lastId;
-            $value = $db->lastValue;
-        }
 
         if ($id && $id > 0 && $id < 1000001) {
             while($id < 1000001) {
@@ -73,9 +69,14 @@
     }
 
     if ($action === 'get_row') {
-        $id = $_GET['id'];
+        $db = new Database;
+        $error = $db->connection->errno;
+
+        $id = intval($_GET['id']);
         $result = $db->getRow($id);
 
+        var_dump($result);
+        die();
         echo json_encode($result);
     }
 

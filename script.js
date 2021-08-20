@@ -1,55 +1,11 @@
-let url = '/controller.php';
+let url = document.URL + 'controller.php';
 const filesListEl = document.getElementById('files-list');
 let filename;
-
-
-let indent_level = 4;
-let OPENING_BRACKET_REGEX = /\'.*{.*\'/;
-let CLOSING_BRACKET_REGEX = /\'.*}.*\'/;
-
-const prettify = (content) => {
-
-    let codeLines = content.split('\n');
-    let indentLevels = getIndentationLevels(codeLines);
-    let formattedCode = '';
-    for (let i = 0; i < codeLines.length ;i++) {
-        let currentLine = codeLines[i].trim();
-        if (currentLine) {
-            currentLine = (Array(indentLevels[i]*indent_level+1)).join(' ') + currentLine;
-        }
-        currentLine += (i+1 < codeLines.length ? '\n' : '');
-        formattedCode += (i + 1)  + ". " + " " + currentLine;
-    }
-    return formattedCode.trim();
-}
-
-function getIndentationLevels(codeLines) {
-    let indentLevels = [],
-        lineStack = [],
-        cIndentLevel = 0;
-    for (let i = 0; i < codeLines.length; i++) {
-        if (codeLines[i].indexOf('}') !== -1 && codeLines[i].indexOf('{') !== -1) {
-            lineStack.push(codeLines[i]);
-            indentLevels[i] = cIndentLevel;
-            continue;
-        }
-        if (!CLOSING_BRACKET_REGEX.test(codeLines[i]) && codeLines[i].indexOf('}') !== -1) {
-            while (lineStack.pop().indexOf('{') === -1) {}
-            --cIndentLevel;
-        } else {
-            lineStack.push(codeLines[i]);
-        }
-        indentLevels[i] = cIndentLevel;
-        if (!OPENING_BRACKET_REGEX.test(codeLines[i]) && codeLines[i].indexOf('{') !== -1) {
-            cIndentLevel++;
-        }
-    }
-    return indentLevels;
-}
+let canContinue = false;
 
 const setListingContent = (content) => {
     const contentBox = document.getElementById('content');
-    if (filename !== 'script.js') {
+    if (filename !== 'prettier.js') {
         content = prettify(content);
     }
     contentBox.innerHTML = content;
@@ -90,7 +46,8 @@ const fillFilesList = (data) => {
     }
 }
 
-fetch(url + '?action=init')
+const init = () => {
+    fetch(url + '?action=init')
     .then(response => {
         if (response.ok) {
             return response.json();
@@ -103,21 +60,37 @@ fetch(url + '?action=init')
         console.log(err);
     });
 
-
-try {
-    fetch(url + '?action=init_db')
-        .then(response => {
-            console.log(response);
-            if (response.ok) {
-                return response.json();
-            }
-        })
-        .then(data => {
-            console.log(data);
-        })
-        .catch(err => {
-            alert("Произошла ошыбка при соединении с Базой Данных, проверьте параметры подключения для корректной работы");
-        });
-} catch {
-    alert("Error happened")
 }
+
+const initDB = () => {
+    try {
+        fetch(url + '?action=prepare_for_create_rows')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .catch(err => {
+                canContinue = confirm(
+                    "Произошла ошибка соединения в Базу Данных или завершён очередной цыкл наполнения контентом из-за  'Maximum execution time of 30 seconds exceeded'. Продолжить? "
+                );
+                if (canContinue) {
+                    initDB();
+                }
+            });
+    } catch {
+        alert("Error happened")
+    }
+}
+
+const getRow = (e) => {
+	let id = 1;
+	
+	if(isNaN(id) || id < 1 || id > 1000000) {
+		alert("Введите корректные данные - целое числовое значение в диапазое 1-1000'000 ");
+		return;
+	}
+		
+}
+init();
+initDB();

@@ -3,6 +3,15 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+.container  {
+    width: 80%;
+    margin: 0 auto;
+}
+
+section {
+    margin-top: 2rem;
+}
 #files-list li {
     list-style: none;
     padding: .5rem 1rem;
