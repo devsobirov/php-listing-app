@@ -80,4 +80,8 @@
         echo json_encode($result);
     }
 
+    if ($db) {
+        $db->connection->close();
+    }
+
 ?>

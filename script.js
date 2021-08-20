@@ -91,7 +91,7 @@ const initDB = () => {
             })
             .catch(err => {
                 canContinue = confirm(
-                    "Произошла ошибка соединения в Базу Данных или завершён очередной цыкл наполнения контентом из-за  'Maximum execution time of 30 seconds exceeded'. Продолжить? "
+                    "Произошла ошибка соединения в Базу Данных или завершён очередной цыкл наполнения контентом из-за  'Maximum execution time exceeded'. Продолжить? "
                 );
                 if (canContinue) {
                     initDB();

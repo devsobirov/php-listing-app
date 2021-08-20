@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <section class="listing">
+        <div class="container">
+            <h1 id="listing">PHP :  </h1>
+            <div class="scrollable">
+                <textarea id="content" readonly rows="200"> 
+- controller.php :
+    Постепенно загружает приложение по $action ам полученных $_GET['action'] 
+        параметра: 
+
+
+        $action- INIT - возвращает массив с файлами в директории;
+
+        $action- LISTING - возвращает контент файла в полученного $_GET['file'] (название файла) 
+            параметра;
+            
+        $action- PREPARE_FOR_CREATE_ROWS - подключается к БД, получает последнего ID и VALUE 
+        для дальнейшего вычесления, запускает следующего звена - CREATE_ROWS;
+
+        $action- CREATE_ROWS  - вычесляет последующего VALUE и создает записей в БД по цыклу 
+        до прерывание Maximum_execution_time_exceeded, после чего заново запускается через 
+        посторонный джаваскрипт запроса;
+
+        $action- GET_ROWS - получает из БД запращеваемого значения по ID;
+
+                </textarea>
+            </div>
+        </div>
+    </section>
+
+    <section class="listing">
+        <div class="container">
+            <h1 id="listing">Javascript :  </h1>
+            <div class="scrollable">
+                <textarea id="content" readonly rows="200"> 
+    - prettier.js : форматирует контент для листинга, устанавливает строки и отступы;
+    - script.js : имеет 3 ключевых методов :
+            init();
+            initDB();
+            getRows();
+                </textarea>
+            </div>
+        </div>
+    </section>
+
+    <section class="footer">
+        <div>
+            <span class="info">Developer :</span>
+            <a href="tel:+998934690797" target="_blank">Sobirov Otabek</a>
+        </div>
+        <div>
+            <span class="info">Email : </span>
+            <a href="mailto:devsobirov@gmail.com" target="_blank">devsobirov@gmail.com</a>
+        </div>
+        <div>
+            <span class="info">Telegram</span>
+            <a href="https://t.me/bIurry_face" target="_blank">+998934690797 </a>
+        </div>
+        <div>
+            <span class="info">Github: :</span>
+            <a href="https://github.com/devsobirov" target="_blank">@devsobirov </a>
+        </div>
+    </section>
+</body>
+</html>
