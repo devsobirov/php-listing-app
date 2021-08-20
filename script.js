@@ -1,7 +1,20 @@
 let url = document.URL + 'controller.php';
 const filesListEl = document.getElementById('files-list');
+const inputEl = document.getElementById('input');
+const resultEl = document.getElementById('result');
+const submitBtn = document.getElementById('submit');
+const listingHeadEl = document.getElementById('listing');
+
 let filename;
 let canContinue = false;
+
+const setListingHead = (filename) => {
+    let spanEl = document.createElement('span');
+    spanEl.classList.add('highlight');
+    spanEl.innerText = filename;
+    listingHeadEl.innerText = "Выбранный файл для листинга - ";
+    listingHeadEl.appendChild(spanEl);
+}
 
 const setListingContent = (content) => {
     const contentBox = document.getElementById('content');
@@ -21,6 +34,7 @@ const handleListing = (e) => {
             }
         })
         .then(data => {
+            setListingHead(filename);
             setListingContent(data);
         })
         .catch(err => {
@@ -46,6 +60,10 @@ const fillFilesList = (data) => {
     }
 }
 
+const setResultInput = (value = "") => {
+    resultEl.value = value;
+}
+
 const init = () => {
     fetch(url + '?action=init')
     .then(response => {
@@ -66,6 +84,7 @@ const initDB = () => {
     try {
         fetch(url + '?action=prepare_for_create_rows')
             .then(response => {
+                canContinue = true;
                 if (response.ok) {
                     return response.json();
                 }
@@ -84,13 +103,42 @@ const initDB = () => {
 }
 
 const getRow = (e) => {
-	let id = 1;
+	let id = inputEl.value;
+    function isInteger(n) {
+        return n === +n && n === (n|0);
+    }
 	
-	if(isNaN(id) || id < 1 || id > 1000000) {
-		alert("Введите корректные данные - целое числовое значение в диапазое 1-1000'000 ");
+	if(isNaN(id) || id < 1 || id > 1000000 || isInteger(id)) {
+		alert("Введите корректные данные - целое числовое значение в диапазое 1-1000'000, не целые числа округляется");
 		return;
-	}
+	} 
+
+    setResultInput();
+    fetch(url + '?action=get_row&id=' + id)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+        })
+        .then(data => {
+            if (data) {
+                setResultInput(data.value);
+            }else if (!data && !canContinue) {
+                canContinue = confirm("Запрашеваемое значение для - " + id +" пока не сущесвтует в Базе данных, продолжать добавление записей?");
+                if (canContinue) {
+                    initDB();
+                    alert("Добавление оставшиейся записей успешно запушена!");
+                }
+            } else {
+                alert("Запрашеваемое значение для - " + id +" пока не сущесвтует в Базе данных, возможно будет доступен через некоторое время");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
 		
 }
 init();
 initDB();
+
+submitBtn.addEventListener('click', getRow);

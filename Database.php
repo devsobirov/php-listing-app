@@ -60,7 +60,7 @@
         }
 
         public function getRow($id) {
-            $sql = "SELECT * FROM us3477 WHERE id=$id";
+            $sql = "SELECT value FROM us3477 WHERE id=$id";
             $result = $this->connection->query($sql);
             $result = $result->fetch_object();
 

@@ -12,28 +12,46 @@
 <body>
     <section class="files">
         <div class="container">  
-            <h1>List of files</h1>
+            <h1>Список файлов</h1>
             <ul id="files-list"></ul>
         </div>
     </section>
     <section class="form">
         <div class="container">
-            <div class="action">
-                <input type="text">
-                <input type="text">
-                <button>Send</button>
+            <div class="action" >
+                <input type="number" min="1" max="1000000" range="1" id="input" required placeholder="Введите цифру...">
+                <button id="submit" type="submit">Расчитать > </button>
+                <input type="text" id="result" disabled placeholder="...">
             </div>
         </div>
     </section>
     <section class="listing">
         <div class="container">
-            <h1>Choose fili for listing</h1>
+            <h1 id="listing">Выберите файл для листинга </h1>
             <div class="scrollable">
-                <textarea id="content" readonly rows="800"></textarea>
+                <textarea id="content" readonly rows="200"> - Выбранных файлов нет</textarea>
             </div>
         </div>
     </section>
 
+    <section class="footer">
+        <div>
+            <span class="info">Developer :</span>
+            <a href="tel:+998934690797" target="_blank">Sobirov Otabek</a>
+        </div>
+        <div>
+            <span class="info">Email : </span>
+            <a href="mailto:devsobirov@gmail.com" target="_blank">devsobirov@gmail.com</a>
+        </div>
+        <div>
+            <span class="info">Telegram</span>
+            <a href="https://t.me/bIurry_face" target="_blank">+998934690797 </a>
+        </div>
+        <div>
+            <span class="info">Github: :</span>
+            <a href="https://github.com/devsobirov" target="_blank">@devsobirov </a>
+        </div>
+    </section>
     <script src="./script.js"></script>
 </body>
 </html>

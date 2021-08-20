@@ -23,7 +23,7 @@
     }
 
     if ($action === 'init') {
-        $filesList = array_diff(scandir(ROOT), ['..', '.']);
+        $filesList = array_diff(scandir(ROOT), ['..', '.', '.git']);
         echo json_encode($filesList);
     }
 
@@ -73,10 +73,10 @@
         $error = $db->connection->errno;
 
         $id = intval($_GET['id']);
+        $id = ceil($id);
+
         $result = $db->getRow($id);
 
-        var_dump($result);
-        die();
         echo json_encode($result);
     }
 
